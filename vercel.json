@@ -12,7 +12,7 @@
       "src": "server/server.js",
       "use": "@vercel/node",
       "config": {
-        "includeFiles": ["server/mock-reviews.json"]
+        "includeFiles": ["server/mock-reviews.json"] 
       }
     }
   ],

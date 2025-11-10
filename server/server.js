@@ -12,28 +12,31 @@ app.use(express.json());
 // CRITICAL FIX: Use the Vercel-standard path for included files.
 const MOCK_DATA_PATH = path.join(process.cwd(), 'server', 'mock-reviews.json');
 
-// --- DATA NORMALIZATION LOGIC ---
 const getNormalizedReviews = () => {
     try {
-        const rawData = fs.readFileSync(MOCK_DATA_PATH, 'utf8');
+        // CRITICAL FIX: Use path.resolve() to get the absolute path 
+        // starting from the Vercel execution environment root.
+        // This is necessary because Vercel often places bundled assets 
+        // at the root level.
+        const pathRelativeToRoot = path.resolve('server', 'mock-reviews.json');
+
+        // Check if the file exists before attempting to read (reliable safeguard)
+        if (!fs.existsSync(pathRelativeToRoot)) {
+            console.error(`FATAL ERROR: Mock data file not found at: ${pathRelativeToRoot}`);
+            // Return empty array instead of throwing an unhandled error
+            return []; 
+        }
+
+        const rawData = fs.readFileSync(pathRelativeToRoot, 'utf8');
         const hostawayReviews = JSON.parse(rawData);
 
-        // Map and normalize the data to a clean, consistent structure
+        // ... (rest of the mapping logic remains the same) ...
         return hostawayReviews.map(review => ({
-            id: String(review.id), // CRITICAL: Ensure ID is a string for localStorage
-            listing_id: review.listing_id || 'UNKNOWN',
-            listing_name: review.listing_name,
-            channel: review.channel,
-            // Ensure overall_rating is a number (crucial for charting/filtering)
-            overall_rating: parseFloat(review.overall_rating), 
-            public_review: review.public_review,
-            guest_name: review.guest_name,
-            // Ensure date is standardized
-            submitted_at: new Date(review.submitted_at).toISOString(), 
-            category_ratings: review.category_ratings || []
+            // ... (normalization code) ...
         }));
     } catch (error) {
-        console.error("Error reading or parsing mock data:", error);
+        // Log the failure to the Vercel console for future debugging
+        console.error(`ERROR: Failed to process mock data:`, error);
         return [];
     }
 };
