@@ -10,10 +10,8 @@
     },
     {
       "src": "server/server.js",
-      "use": "@vercel/node",
-      "config": {
-        "includeFiles": ["server/mock-reviews.json"] 
-      }
+      "use": "@vercel/node"
+      // No need for "includeFiles" since data is imported directly
     }
   ],
   "rewrites": [
