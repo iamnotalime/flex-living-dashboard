@@ -1,0 +1,218 @@
+/* --- Global Styles & Resets --- */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #f4f7f6; /* Lighter, cleaner background */
+  color: #333;
+}
+
+main {
+  /* Add max-width for better readability on large screens */
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* --- Header & Navigation --- */
+.app-header {
+  background-color: #ffffff; /* Clean white header */
+  padding: 15px 30px;
+  border-bottom: 1px solid #ddd;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.app-header nav {
+  display: flex;
+  gap: 10px;
+}
+
+.nav-link {
+  text-decoration: none;
+  color: #555; /* Darker text */
+  font-size: 1em;
+  font-weight: 600;
+  padding: 10px 15px;
+  border-radius: 8px;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.nav-link:hover {
+  background-color: #f0f0f0;
+}
+
+.nav-link.active {
+  background-color: #007bff; /* Primary color */
+  color: white;
+}
+
+/* --- Dashboard Styles --- */
+.dashboard-container {
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.loading-container {
+  padding: 50px; 
+  text-align: center; 
+  font-size: 1.2em;
+}
+
+h2 {
+  color: #1a202c;
+  border-bottom: 2px solid #007bff;
+  padding-bottom: 10px;
+  margin-top: 0;
+}
+
+.filter-container {
+  margin: 20px 0;
+  background-color: #f9f9f9;
+  padding: 15px;
+  border-radius: 8px;
+}
+
+.filter-container label {
+  font-weight: 600;
+  margin-right: 10px;
+}
+
+.filter-container select {
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1em;
+}
+
+/* --- RESPONSIVE TABLE --- */
+.table-responsive-wrapper {
+  overflow-x: auto; /* CRITICAL: This makes the table scroll horizontally on small screens */
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+  /* Set min-width to prevent content from squishing too much */
+  min-width: 150px; 
+}
+
+thead tr {
+  background-color: #f4f7f6;
+  font-size: 0.9em;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+tbody tr:nth-child(even) {
+  background-color: #fdfdfd;
+}
+
+tbody tr:hover {
+  background-color: #f0f7ff; /* Light blue hover */
+}
+
+td[data-label="LIVE on Site"] {
+  text-align: center;
+  min-width: 100px;
+}
+
+.review-toggle {
+  transform: scale(1.3);
+  cursor: pointer;
+}
+
+/* --- Public Review Page Styles --- */
+.public-reviews-section {
+  max-width: 900px;
+  margin: 20px auto;
+}
+
+/* Review Card Design */
+.review-card {
+  background-color: #ffffff;
+  border: 1px solid #e0e0e0;
+  padding: 25px;
+  margin-bottom: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+  transition: box-shadow 0.2s ease;
+}
+
+.review-card:hover {
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.07);
+}
+
+.review-card p {
+  font-size: 1.1em;
+  font-style: italic;
+  margin: 0 0 20px 0;
+  color: #333;
+  line-height: 1.6;
+}
+
+.review-card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.9em;
+  color: #666;
+}
+
+.review-card-rating {
+  font-weight: 700;
+  font-size: 1.1em;
+  color: #007bff;
+  margin-right: 10px;
+}
+
+/* --- Mobile Responsiveness --- */
+@media (max-width: 768px) {
+  .app-header {
+    padding: 15px;
+  }
+  
+  .app-header nav {
+    justify-content: space-around;
+  }
+
+  .nav-link {
+    padding: 8px 10px;
+    font-size: 0.9em;
+  }
+
+  main {
+    padding: 10px;
+  }
+
+  .dashboard-container {
+    padding: 15px;
+  }
+
+  /* The table will now scroll, but we can also hide less-critical 
+    columns on mobile if we wanted, or stack the cells. 
+    For now, horizontal scroll is the most stable.
+  */
+}
+
+@media (max-width: 480px) {
+  .app-header nav {
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+  }
+}
