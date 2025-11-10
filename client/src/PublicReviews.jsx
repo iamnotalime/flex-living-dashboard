@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { useApprovedReviews } from './useApprovedReviews';
+import { useApprovedReviews } from './useApprovedReviews'; 
 
-// --- Review Card Component (Now uses CSS classes) ---
+// --- Review Card Component ---
 const ReviewCard = ({ review }) => (
     <div className="review-card">
         <p>"{review.public_review}"</p>
@@ -19,39 +19,31 @@ const ReviewCard = ({ review }) => (
 
 // --- MAIN PUBLIC DISPLAY COMPONENT ---
 export function PublicReviews() {
+    // FIX: Ensure correct destructuring
     const [allReviews, setAllReviews] = useState([]);
     const [loading, setLoading] = useState(true);
     const { approvedIds } = useApprovedReviews(); 
 
+    // 1. Fetch ALL data 
     useEffect(() => {
         fetch('/api/reviews/hostaway')
             .then(res => res.json())
             .then(data => {
-                setLoading(false); // Move loading control here
-
-                // CRITICAL CHECK: Ensure the required structure exists
+                setLoading(false); 
                 if (data && data.status === 'success' && Array.isArray(data.result)) {
-                   
-                   if (data.result.length === 0) {
-                        console.warn("API returned a successful response but an empty array.");
-                   }
-                   
                    setAllReviews(data.result);
-
                 } else {
-                    console.error("API Response structure invalid or not success:", data);
-                    // If the structure is wrong, reset state to empty
                     setAllReviews([]); 
                 }
             })
             .catch(error => {
-                console.error("Fetch failed entirely (CORS/Network error):", error);
+                console.error("Fetch failed entirely:", error);
                 setLoading(false);
                 setAllReviews([]);
             });
     }, []);
 
-    // Filter reviews (logic is unchanged)
+    // 2. Filter reviews
     const publishedReviews = allReviews.filter(review => 
         approvedIds.includes(String(review.id))
     ).sort((a, b) => new Date(b.submitted_at) - new Date(a.submitted_at)); 
@@ -61,14 +53,14 @@ export function PublicReviews() {
     // --- RENDER PUBLIC PAGE SECTION ---
     return (
         <div className="public-reviews-section">
-            <h2>
+            <h2 style={{ color: '#007bff', borderBottom: '2px solid #007bff', paddingBottom: '10px' }}>
                 Guest Experiences ({publishedReviews.length} Reviews)
             </h2>
             
             {publishedReviews.length === 0 ? (
                 <div className="review-card">
                     <p style={{ textAlign: 'center', fontStyle: 'normal' }}>
-                        No public reviews have been selected for display yet.
+                        Be the first to leave a public review! (Or the manager has not approved any yet.)
                     </p>
                 </div>
             ) : (
