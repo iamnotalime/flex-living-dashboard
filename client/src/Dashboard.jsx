@@ -25,15 +25,30 @@ export function Dashboard() {
 
     useEffect(() => {
         fetch('/api/reviews/hostaway')
-            // ... (rest of fetch logic is unchanged)
             .then(res => res.json())
             .then(data => {
-                if (data.status === 'success') {
-                    setReviews(data.result);
+                setLoading(false); // Move loading control here
+
+                // CRITICAL CHECK: Ensure the required structure exists
+                if (data && data.status === 'success' && Array.isArray(data.result)) {
+                   
+                   if (data.result.length === 0) {
+                        console.warn("API returned a successful response but an empty array.");
+                   }
+                   
+                   setReviews(data.result);
+
+                } else {
+                    console.error("API Response structure invalid or not success:", data);
+                    // If the structure is wrong, reset state to empty
+                    setReviews([]); 
                 }
             })
-            .catch(error => console.error("Could not fetch reviews:", error))
-            .finally(() => setLoading(false));
+            .catch(error => {
+                console.error("Fetch failed entirely (CORS/Network error):", error);
+                setLoading(false);
+                setReviews([]);
+            });
     }, []);
 
     const filteredAndSortedReviews = useMemo(() => {

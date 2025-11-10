@@ -24,16 +24,31 @@ export function PublicReviews() {
     const { approvedIds } = useApprovedReviews(); 
 
     useEffect(() => {
-        // ... (fetch logic is unchanged)
         fetch('/api/reviews/hostaway')
             .then(res => res.json())
             .then(data => {
-                if (data.status === 'success') {
-                    setAllReviews(data.result);
+                setLoading(false); // Move loading control here
+
+                // CRITICAL CHECK: Ensure the required structure exists
+                if (data && data.status === 'success' && Array.isArray(data.result)) {
+                   
+                   if (data.result.length === 0) {
+                        console.warn("API returned a successful response but an empty array.");
+                   }
+                   
+                   setReviews(data.result);
+
+                } else {
+                    console.error("API Response structure invalid or not success:", data);
+                    // If the structure is wrong, reset state to empty
+                    setReviews([]); 
                 }
             })
-            .catch(error => console.error("Could not fetch public reviews:", error))
-            .finally(() => setLoading(false));
+            .catch(error => {
+                console.error("Fetch failed entirely (CORS/Network error):", error);
+                setLoading(false);
+                setReviews([]);
+            });
     }, []);
 
     // Filter reviews (logic is unchanged)

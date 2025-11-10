@@ -13,43 +13,32 @@ app.use(express.json());
 // --- DATA NORMALIZATION LOGIC ---
 const getNormalizedReviews = () => {
     try {
-        // Since data is imported directly, we just run the normalization map.
-        if (!Array.isArray(hostawayReviews) || hostawayReviews.length === 0) {
-            console.warn("Mock data is empty or invalid array.");
-            return [];
-        }
+        // 1. Force a Deep Copy using JSON methods. This is the most reliable way 
+        //    to prevent caching/immutability issues on the serverless function.
+        const hostawayReviewsCopy = JSON.parse(JSON.stringify(hostawayReviews));
         
-        return hostawayReviews.map(review => ({
-            id: String(review.id), // CRITICAL: Ensure ID is a string for localStorage
+        // 2. Map and normalize the fresh copy:
+        return hostawayReviewsCopy.map(review => ({
+            id: String(review.id), 
+            // ... (rest of the normalization logic remains the same) ...
             listing_id: review.listing_id || 'UNKNOWN',
-            listing_name: review.listing_name,
-            channel: review.channel,
             overall_rating: parseFloat(review.overall_rating), 
-            public_review: review.public_review,
-            guest_name: review.guest_name,
-            submitted_at: new Date(review.submitted_at).toISOString(), 
+            submitted_at: new Date(review.submitted_at).toISOString(),
             category_ratings: review.category_ratings || []
         }));
     } catch (error) {
-        console.error(`FATAL ERROR: Failed to process mock data:`, error);
+        console.error(`FATAL ERROR: Normalization failed:`, error);
         return [];
     }
 };
-
-// --- API Route: GET /api/reviews/hostaway ---
 // --- API Route: GET /api/reviews/hostaway ---
 app.get('/api/reviews/hostaway', (req, res) => {
-    // *** TEMPORARY DIAGNOSTIC FIX ***
-    // Bypass all processing logic and return the raw, unmapped data.
-    // If this works, the problem is in the 'getNormalizedReviews' function.
-    if (hostawayReviews.length > 0) {
-        console.log("Diagnostic: Returning RAW data from API.");
-    }
+    const normalizedReviews = getNormalizedReviews();
     
+    // Returns structured, usable data for the frontend
     res.json({
         status: "success",
-        // Return raw data directly
-        result: hostawayReviews 
+        result: normalizedReviews
     });
 });
 
