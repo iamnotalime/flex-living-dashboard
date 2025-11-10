@@ -37,13 +37,19 @@ const getNormalizedReviews = () => {
 };
 
 // --- API Route: GET /api/reviews/hostaway ---
+// --- API Route: GET /api/reviews/hostaway ---
 app.get('/api/reviews/hostaway', (req, res) => {
-    const normalizedReviews = getNormalizedReviews();
+    // *** TEMPORARY DIAGNOSTIC FIX ***
+    // Bypass all processing logic and return the raw, unmapped data.
+    // If this works, the problem is in the 'getNormalizedReviews' function.
+    if (hostawayReviews.length > 0) {
+        console.log("Diagnostic: Returning RAW data from API.");
+    }
     
-    // Returns structured, usable data for the frontend
     res.json({
         status: "success",
-        result: normalizedReviews
+        // Return raw data directly
+        result: hostawayReviews 
     });
 });
 
