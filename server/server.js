@@ -9,7 +9,8 @@ app.use(express.static(path.join(__dirname, '..', 'client', 'build')));
 app.use(express.json());
 
 // Path to the mock data file
-const MOCK_DATA_PATH = path.join(__dirname, 'mock-reviews.json');
+// CRITICAL FIX: Use the Vercel-standard path for included files.
+const MOCK_DATA_PATH = path.join(process.cwd(), 'server', 'mock-reviews.json');
 
 // --- DATA NORMALIZATION LOGIC ---
 const getNormalizedReviews = () => {
