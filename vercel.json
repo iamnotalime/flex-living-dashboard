@@ -10,17 +10,20 @@
     },
     {
       "src": "server/server.js",
-      "use": "@vercel/node"
+      "use": "@vercel/node",
+      "config": {
+        "includeFiles": ["server/mock-reviews.json"] 
+      }
     }
   ],
-  "routes": [
+  "rewrites": [
     {
-      "src": "/api/reviews/hostaway",
-      "dest": "server/server.js"
+      "source": "/api/reviews/hostaway",
+      "destination": "server/server.js"
     },
     {
       "src": "/(.*)",
-      "dest": "client/build/index.html" 
+      "dest": "client/build/$1"
     }
   ]
 }
