@@ -36,18 +36,18 @@ export function PublicReviews() {
                         console.warn("API returned a successful response but an empty array.");
                    }
                    
-                   setReviews(data.result);
+                   setAllReviews(data.result);
 
                 } else {
                     console.error("API Response structure invalid or not success:", data);
                     // If the structure is wrong, reset state to empty
-                    setReviews([]); 
+                    setAllReviews([]); 
                 }
             })
             .catch(error => {
                 console.error("Fetch failed entirely (CORS/Network error):", error);
                 setLoading(false);
-                setReviews([]);
+                setAllReviews([]);
             });
     }, []);
 
