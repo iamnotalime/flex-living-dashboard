@@ -11,7 +11,6 @@
     {
       "src": "server/server.js",
       "use": "@vercel/node"
-      // No need for "includeFiles" since data is imported directly
     }
   ],
   "rewrites": [
