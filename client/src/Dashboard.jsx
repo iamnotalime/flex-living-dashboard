@@ -3,6 +3,7 @@ import { useApprovedReviews } from './useApprovedReviews';
 
 // --- Helper Component: Star Rating Display ---
 const StarRating = ({ rating }) => {
+    // ... (This component code is unchanged)
     const fullStars = Math.floor(rating);
     let stars = [];
     for (let i = 0; i < 5; i++) {
@@ -17,23 +18,29 @@ const StarRating = ({ rating }) => {
 
 // --- MAIN DASHBOARD COMPONENT ---
 export function Dashboard() {
-    // FIX: Ensure correct destructuring
-    const [reviews, setReviews] = useState([]); 
+    const [reviews, setReviews] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [filterRating, setFilterRating] = useState(0); 
     const { approvedIds, toggleApproval } = useApprovedReviews();
+    const [filterRating, setFilterRating] = useState(0); 
 
-    // 1. Fetch data from the mock API
     useEffect(() => {
         fetch('/api/reviews/hostaway')
             .then(res => res.json())
             .then(data => {
-                setLoading(false); 
-                // CRITICAL CHECK: Ensure data is an array before setting state
+                setLoading(false); // Move loading control here
+
+                // CRITICAL CHECK: Ensure the required structure exists
                 if (data && data.status === 'success' && Array.isArray(data.result)) {
+                   
+                   if (data.result.length === 0) {
+                        console.warn("API returned a successful response but an empty array.");
+                   }
+                   
                    setReviews(data.result);
+
                 } else {
                     console.error("API Response structure invalid or not success:", data);
+                    // If the structure is wrong, reset state to empty
                     setReviews([]); 
                 }
             })
@@ -44,8 +51,8 @@ export function Dashboard() {
             });
     }, []);
 
-    // 2. Filter and Sort Logic (unchanged)
     const filteredAndSortedReviews = useMemo(() => {
+        // ... (this logic is unchanged)
         let sorted = [...reviews].sort((a, b) => new Date(b.submitted_at) - new Date(a.submitted_at));
         
         if (filterRating > 0) {
@@ -69,9 +76,14 @@ export function Dashboard() {
                     <option value="2">2 Stars or Less (Critical)</option>
                 </select>
             </div>
+
+            {/* In a real app, Heatmap/Charts would go here */}
             
             <h3>Review Management ({filteredAndSortedReviews.length} Reviews)</h3>
             
+            {/* **THIS IS THE CRITICAL CHANGE**
+              The <div> wrapper is added to make the table responsive.
+            */}
             <div className="table-responsive-wrapper">
                 <table>
                     <thead>

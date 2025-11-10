@@ -1,4 +1,4 @@
-module.exports = [
+[
     {
         "id": 1001,
         "listing_id": "P101",
@@ -94,5 +94,53 @@ module.exports = [
             {"category": "Accuracy", "rating": 4},
             {"category": "Maintenance", "rating": 3}
         ]
+    },
+    {
+        "id": 1007,
+        "listing_id": "P101",
+        "listing_name": "The Shoreditch Loft - Unit A",
+        "channel": "Hostaway Direct",
+        "overall_rating": 1.5,
+        "public_review": "Absolutely unacceptable. The heating was broken, and it took 48 hours to get a response. Ruined our weekend.",
+        "guest_name": "Kyle R.",
+        "submitted_at": "2025-11-15T18:00:00Z",
+        "category_ratings": [
+            {"category": "Cleanliness", "rating": 2},
+            {"category": "Communication", "rating": 1},
+            {"category": "Accuracy", "rating": 2},
+            {"category": "Maintenance", "rating": 1}
+        ]
+    },
+    {
+        "id": 1008,
+        "listing_id": "P205",
+        "listing_name": "Hampstead Family Retreat",
+        "channel": "Vrbo",
+        "overall_rating": 4.2,
+        "public_review": "Solid stay. Everything matched the photos. The kitchen sink drain was a little slow, but nothing major.",
+        "guest_name": "The Joneses",
+        "submitted_at": "2025-11-01T13:00:00Z",
+        "category_ratings": [
+            {"category": "Cleanliness", "rating": 4},
+            {"category": "Communication", "rating": 5},
+            {"category": "Accuracy", "rating": 5},
+            {"category": "Maintenance", "rating": 3}
+        ]
+    },
+    {
+        "id": 1009,
+        "listing_id": "P303",
+        "listing_name": "Covent Garden Studio",
+        "channel": "Airbnb",
+        "overall_rating": 5.0,
+        "public_review": "Perfect little studio. Location couldn't be beat. It was clean and the host provided great instructions.",
+        "guest_name": "Mia F.",
+        "submitted_at": "2025-11-10T17:30:00Z",
+        "category_ratings": [
+            {"category": "Cleanliness", "rating": 5},
+            {"category": "Communication", "rating": 5},
+            {"category": "Accuracy", "rating": 5},
+            {"category": "Maintenance", "rating": 5}
+        ]
     }
-];
+]
